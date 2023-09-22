@@ -5,6 +5,11 @@ import android.graphics.Bitmap
 import org.tensorflow.lite.Interpreter
 import org.tensorflow.lite.Tensor
 import org.tensorflow.lite.support.common.FileUtil
+import org.tensorflow.lite.support.common.ops.NormalizeOp
+import org.tensorflow.lite.support.image.ImageProcessor
+import org.tensorflow.lite.support.image.TensorImage
+import org.tensorflow.lite.support.image.ops.ResizeOp
+import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.io.IOException
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
@@ -64,6 +69,7 @@ class Classifier constructor(
         val outputType = outputTensor.dataType()
         val outputShape = outputTensor.shape()
         modelOutputClasses =  outputShape[1]
+        return
     }
 
     private fun resizeBitmap(bitmap: Bitmap): Bitmap {
@@ -71,6 +77,7 @@ class Classifier constructor(
     }
 
     private fun convertBitmapToGrayByteBuffer(bitmap: Bitmap): ByteBuffer {
+        val byteCount = bitmap.byteCount
         val byteByffer = ByteBuffer.allocateDirect(bitmap.byteCount)
         byteByffer.order(ByteOrder.nativeOrder())
         val pixels = IntArray(bitmap.width * bitmap.height)

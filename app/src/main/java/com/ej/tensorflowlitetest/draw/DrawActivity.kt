@@ -9,11 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.divyanshu.draw.widget.DrawView
 import com.ej.tensorflowlitetest.R
 import com.ej.tensorflowlitetest.tflite.Classifier
+import com.ej.tensorflowlitetest.tflite.ClassifierWithSupport
 import java.io.IOException
 import java.util.*
 
 class DrawActivity : AppCompatActivity() {
-    lateinit var cls : Classifier
+//    lateinit var cls : Classifier
+    lateinit var cls : ClassifierWithSupport
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_draw)
@@ -29,13 +31,13 @@ class DrawActivity : AppCompatActivity() {
         classifyBtn.setOnClickListener {
             val image = drawView.getBitmap()
             val res = cls.classify(image)
-            val outStr = String.format(
-                Locale.ENGLISH,
-                "%d, %.0f%%",
-                res.first,
-                res.second * 100.0f
-            )
-            resultView.text = outStr
+//            val outStr = String.format(
+//                Locale.ENGLISH,
+//                "%d, %.0f%%",
+//                res.first,
+//                res.second * 100.0f
+//            )
+//            resultView.text = outStr
         }
 
         val clearBtn = findViewById<Button>(R.id.clearBtn)
@@ -44,7 +46,7 @@ class DrawActivity : AppCompatActivity() {
             drawView.clearCanvas()
         }
 
-        cls  = Classifier(this)
+        cls  = ClassifierWithSupport(this)
         try {
             cls.init()
         } catch (e: IOException) {
